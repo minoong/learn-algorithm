@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"assert/hash-table.js":[function(require,module,exports) {
+})({"assert/permutaions.js":[function(require,module,exports) {
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -130,98 +130,30 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+// 순열 알고리즘 재귀 호출
+var example = ["A", "B", "C"];
+var result = getPermutations(example, 0, 3);
+console.log(result);
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var HashTable = /*#__PURE__*/function () {
-  function HashTable(size) {
-    _classCallCheck(this, HashTable);
-
-    this.size = size || 100;
-    this.storage = [];
+function getPermutations(arr, depth, r) {
+  if (depth == r) {
+    console.log([].concat(_toConsumableArray(arr.slice(0, r)), _toConsumableArray(arr.slice(r + 1))));
+    return;
   }
 
-  _createClass(HashTable, [{
-    key: "getHash",
-    value: function getHash(key) {
-      var hash = 0;
+  for (var i = depth; i < arr.length; i++) {
+    console.log("<<< i ".concat(i, ", depth ").concat(depth, " r ").concat(r, " arr ").concat(arr));
+    swap(arr, i, depth);
+    getPermutations(arr, depth + 1, r);
+    console.log(">>> i ".concat(i, ", depth ").concat(depth, " r ").concat(r, " arr ").concat(arr));
+    swap(arr, i, depth);
+  }
+}
 
-      for (var i = 0; i < key.length; i++) {
-        hash += key.charCodeAt(i);
-      }
-
-      console.log(hash % this.size);
-      return hash % this.size;
-    }
-  }, {
-    key: "add",
-    value: function add(key, value) {
-      var index = this.getHash(key);
-
-      if (undefined === this.storage[index]) {
-        console.log("add");
-        this.storage[index] = [[key, value]];
-      }
-
-      var isDup = false;
-
-      for (var i = 0; i < this.storage[index].length; i++) {
-        if (this.storage[index][i][0] === key) {
-          this.storage[index][i][1] = value;
-          isDup = true;
-        }
-      }
-
-      if (!isDup) this.storage[index] = [].concat(_toConsumableArray(this.storage[index]), [[key, value]]);
-    }
-  }, {
-    key: "remove",
-    value: function remove(key) {
-      var index = this.getHash(key);
-
-      if (undefined === this.storage[index]) {
-        return false;
-      }
-
-      for (var i = 0; i < this.storage[index].length; i++) {
-        if (this.storage[index][i][0] === key) {
-          this.storage[index] = [].concat(_toConsumableArray(this.storage[index].slice(0, i)), _toConsumableArray(this.storage[index].slice(i + 1)));
-          return true;
-        }
-      }
-
-      return false;
-    }
-  }, {
-    key: "get",
-    value: function get(key) {
-      var index = this.getHash(key);
-
-      if (undefined === this.storage[index]) {
-        return null;
-      } else if (this.storage[index].length === 1 && this.storage[index][0][0] === key) {
-        return this.storage[index][0][1];
-      } else {
-        for (var i = 0; i < this.storage[index].length; i++) {
-          if (this.storage[index][i][0] === key) {
-            return this.storage[index][i][1];
-          }
-        }
-      }
-
-      return null;
-    }
-  }]);
-
-  return HashTable;
-}();
-
-if (!window.dataStructure) {
-  window.dataStructure = {};
-  window.dataStructure.HashTable = HashTable;
+function swap(arr, index1, index2) {
+  var temp = arr[index1];
+  arr[index1] = arr[index2];
+  arr[index2] = temp;
 }
 },{}],"../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -427,5 +359,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","assert/hash-table.js"], null)
-//# sourceMappingURL=/hash-table.d3fed8b7.js.map
+},{}]},{},["../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","assert/permutaions.js"], null)
+//# sourceMappingURL=/permutaions.7cdc21c6.js.map
